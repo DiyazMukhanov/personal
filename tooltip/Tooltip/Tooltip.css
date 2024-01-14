@@ -1,0 +1,22 @@
+.tooltipContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.tooltipText {
+  visibility: hidden;
+  width: 100px;
+  background-color: orange;
+  color: white;
+  position: absolute;
+  bottom: 70%;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltipContainer:hover .tooltipText {
+   visibility: visible;
+   opacity: 1;
+}
