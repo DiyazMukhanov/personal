@@ -1,5 +1,4 @@
 import React, { useLayoutEffect, useState} from 'react';
-import { createPortal } from 'react-dom';
 import { Tooltip } from './Tooltip/index';
 
 export default function App() {
@@ -17,26 +16,10 @@ export default function App() {
 
   return (
     <div className='App'>
-      <Tooltip>
-        {(onMouseEnter, onMouseLeave, showTooltip) => {
-          return (
-            <>
-             {showTooltip && createPortal(
-                  <div style={{ position: 'absolute', top: tooltipTop, left: tooltipLeft, backgroundColor: 'orange', color: 'white', zIndex: '1' }}>
-                    Я тултип
-                  </div>, document.body
-                )}
-              <div
-                className='withTooltip'
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-              >
-               
+      <Tooltip title='Я тултип'>
+              <div>
                 Наведи на меня
               </div>
-            </>
-          );
-        }}
       </Tooltip>
     </div>
   );
