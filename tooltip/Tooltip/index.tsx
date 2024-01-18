@@ -1,43 +1,45 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
-export function Tooltip({ children, title }) {
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipLeft, setTooltipLeft] = useState(null);
-  const [tooltipTop, setTooltipTop] = useState(null);
+type Props = {
+  title: string
+  children: (onMouseEnter: (event: React.MouseEvent) => void, onMouseLeave: () => void) => JSX.Element
+}
 
-  useLayoutEffect(() => {
-    const tooltipedElement = document.querySelectorAll('.withTooltip');
-    tooltipedElement.forEach(element => {
-      let rect = element.getBoundingClientRect();
-      setTooltipLeft(rect.left + 20);
-      setTooltipTop(rect.top - 20);
-    });
-  }, []);
+export function Tooltip({ children, title }: Props) {
+  const [position, setPosition] = useState(null);
+
+  const onMouseEnterHandler = (event: React.MouseEvent) => {
+    const hoveredElement = event.currentTarget as HTMLElement
+    setPosition({
+      top: hoveredElement.getBoundingClientRect().top - 20,
+      left: hoveredElement.getBoundingClientRect().left + 20,
+    })
+  }
+
+  const onMouseLeaveHanlder = () => {
+    setPosition(null)
+  }
 
   return (
     <>
-      {showTooltip &&
+      {position &&
         createPortal(
           <div
             style={{
               position: 'absolute',
-              top: tooltipTop,
-              left: tooltipLeft,
+              top: position?.top,
+              left: position?.left,
               backgroundColor: 'orange',
               color: 'white',
               zIndex: '1',
             }}
-          >{title}</div>,
+          >
+         {title}
+          </div>,
           document.body
         )}
-      <span
-        className='withTooltip'
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-      >
-        {children}
-      </span>
+        {children(onMouseEnterHandler, onMouseLeaveHanlder)}
     </>
   );
 }
