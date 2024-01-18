@@ -17,8 +17,6 @@ export default function App() {
             )
        }}
       </Tooltip>
-              
-
     </div>
   );
 }
