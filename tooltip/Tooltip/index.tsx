@@ -2,24 +2,27 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type Props = {
-  title: string
-  children: (onMouseEnter: (event: React.MouseEvent) => void, onMouseLeave: () => void) => JSX.Element
-}
+  title: string;
+  children: (
+    onMouseEnter: (event: React.MouseEvent) => void,
+    onMouseLeave: () => void
+  ) => JSX.Element;
+};
 
 export function Tooltip({ children, title }: Props) {
   const [position, setPosition] = useState(null);
 
   const onMouseEnterHandler = (event: React.MouseEvent) => {
-    const hoveredElement = event.currentTarget as HTMLElement
+    const hoveredElement = event.currentTarget as HTMLElement;
     setPosition({
       top: hoveredElement.getBoundingClientRect().top - 20,
       left: hoveredElement.getBoundingClientRect().left + 20,
-    })
-  }
+    });
+  };
 
   const onMouseLeaveHanlder = () => {
-    setPosition(null)
-  }
+    setPosition(null);
+  };
 
   return (
     <>
@@ -35,11 +38,11 @@ export function Tooltip({ children, title }: Props) {
               zIndex: '1',
             }}
           >
-         {title}
+            {title}
           </div>,
           document.body
         )}
-        {children(onMouseEnterHandler, onMouseLeaveHanlder)}
+      {children(onMouseEnterHandler, onMouseLeaveHanlder)}
     </>
   );
 }
