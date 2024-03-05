@@ -1,4 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 const DropdownContext = createContext({
   isOpen: false,
@@ -16,10 +17,11 @@ export const Root = ({ children }) => {
 };
 
 type TriggerProps = {
-  children?: ReactNode;
+  children?: ReactNode
+  className: string
 };
 
-const Trigger = ({ children }: TriggerProps) => {
+const Trigger = ({ children, className }: TriggerProps) => {
   const { isOpen, setIsOpen } = useContext(DropdownContext);
 
   return <div onClick={() => setIsOpen(!isOpen)}>{children}</div>;
@@ -29,7 +31,7 @@ const Content = ({ children, className }) => {
   const { isOpen } = useContext(DropdownContext);
 
   if (isOpen) {
-    return <div className={className}>{children}</div>;
+    return createPortal(<div className={className}>{children}</div>, document.body);
   }
 };
 
